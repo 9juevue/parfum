@@ -1,0 +1,54 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    volumes:
+      - './:/var/www/html'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - './:/var/www/html'
+      - './docker/nginx/conf.d:/etc/nginx/conf.d'
+      - './docker/nginx/certs:/etc/nginx/certs'
+
+  mysql:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - './docker/volume/mysql:/var/lib/mysql'
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    platform: linux/amd64
+    ports:
+      - "9090:80"
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+      - UPLOAD_LIMIT=64M
+      - MEMORY_LIMIT=128M
+      - POST_MAX_SIZE=64M
+
+  node:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./docker/node/Dockerfile
+    working_dir: /var/www/html
+    ports:
+      - "5174:5174"
+    tty: true
+    volumes:
+      - ./:/var/www/html
+#      - node_modules:/var/www/html/node_modules
+#      - ./docker/nginx/certs:/certs:ro
