@@ -4,6 +4,7 @@ import vue from "@vitejs/plugin-vue";
 import * as fs from "node:fs";
 
 export default defineConfig({
+    base: process.env.ASSET_URL ? `${process.env.ASSET_URL}/` : "/",
     plugins: [
         laravel({
             input: "resources/js/app.js",
