@@ -22,8 +22,6 @@ return new class extends Migration
             $table->nullableMorphs('pageable');
             $table->timestamps();
         });
-
-        DB::statement('ALTER TABLE `pages` AUTO_INCREMENT = 1001');
     }
 
     /**
