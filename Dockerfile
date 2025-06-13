@@ -37,7 +37,7 @@ RUN set -ex \
  # ------------ Imagick -----------------
  && git clone --depth 1 https://github.com/Imagick/imagick.git /usr/src/imagick \
  && cd /usr/src/imagick \
- && phpize && ./configure && make -j1 && make install \   # <= -j1 вместо -j$(nproc)
+ && phpize && ./configure && make -j1 && make install \
  && docker-php-ext-enable imagick \
  && rm -rf /var/lib/apt/lists/* /usr/src/imagick
 
